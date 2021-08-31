@@ -4,8 +4,8 @@ using namespace std;
 
 ll mod = 1e9 + 7;
 
-ll fact[100004];
-ll modinv[100004];
+ll fact[1000004];
+ll modinv[1000004];
 
 ll power(ll base, ll x){
     ll ans = 1;
@@ -22,8 +22,9 @@ ll power(ll base, ll x){
 }
 
 void precomp(){
+    modinv[0] = 1;
     fact[0] = 1;
-    for(int i = 1; i <= 100000; i++){
+    for(int i = 1; i <= 1000000; i++){
         fact[i] = (fact[i-1]*i)%mod;
         modinv[i] = power(fact[i], mod-2);
     }
@@ -40,14 +41,14 @@ ll ncr(int n, int r){
 
 signed main(){
 #ifndef ONLINE_JUDGE
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
 #endif // ONLINE_JUDGE
 
-	ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
     cin.tie(NULL);  
 
-    
+
     //code here
     int t;
     cin >> t;
@@ -57,10 +58,9 @@ signed main(){
         cin >> n >> r;
         cout << ncr(n, r) << endl;
     }
-    
+
 
     //end
     return 0;
 
 }
-
