@@ -5,30 +5,35 @@ using namespace std;
 #define pno cout << "NO" << "\n";
 #define br cout << "\n";
 
-void multi(int a[2][2], int b[2][2]){
-    int aa[2][2];
-    aa[0][0] = a[0][0] * b[0][0] + a[0][1] * b[1][0];
-    aa[0][1] = a[0][0] * b[0][1] + a[0][1] * b[1][1];
-    aa[1][0] = a[1][0] * b[0][0] + a[1][1] * b[1][0];
-    aa[1][1] = a[1][0] * b[0][1] + a[1][1] * b[1][1];
+//time complexity of multi function will be -> n1 * n2 * n3
+vector<vector<int>> multi(vector<vector<int>> &a, vector<vector<int>> &b){
+    int n1 = a.size();
+    int n2 = b.size();
+    int n3 = b[0].size();
 
-    for(int i = 0; i < 2; i++){
-        for(int j = 0; j < 2; j++){
-            a[i][j] = aa[i][j];
+    vector<vector<int>> ans(n1, vector<int>(n3));
+
+    for(int i = 0; i < n1; i++){
+        for(int j = 0; j < n3; j++){
+            for(int k = 0; k < n2; k++){
+                ans[i][j] += a[i][k] * b[k][j];
+            }
         }
     }
+
+    return ans;
 }
 
 int matrixexpo(int x){
     int n = x - 1;
-    int mat[2][2] = {{1, 1}, {1, 0}};
-    int base[2][2] = {{1, 0}, {0, 1}};
+    vector<vector<int>> mat = {{1, 1}, {1, 0}};
+    vector<vector<int>> base = {{1, 0}, {0, 1}};
     while(n > 0){
         if(n % 2 == 0){
-            multi(mat, mat);
+            mat = multi(mat, mat);
             n = n / 2;
         }else{
-            multi(base, mat);
+            base = multi(base, mat);
             n--;
         }
     }
