@@ -48,32 +48,22 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 ll ceil_div(ll a, ll b) {return a % b == 0 ? a / b : a / b + 1;}
 ll gcd(ll a, ll b){ if (a == 0ll) { return b;} return gcd(b % a, a);}
 
-void dfs(int node, int par, vector<int> adj[], vector<vector<int>> &dp){
+void dfs(ll node, ll par, vector<ll> adj[], vector<vector<ll>> &dp, vector<ll> &level, ll lev = 0){
     dp[node][0] = par;
-    for(int i = 1; i <= 16; i++){
+    level[node] = lev;
+    for(ll i = 1; i <= 20; i++){
         dp[node][i] = dp[dp[node][i-1]][i-1];
     }
     for(auto it : adj[node]){
         if(it != par){
-            dfs(it, node, adj, dp);
+            dfs(it, node, adj, dp, level, lev + 1);
         }
     }
 }
 
-void binarylifting(){
-    int n, k, x;
-    cin >> n >> k >> x;
-    vector<int> adj[n+1];
-    for(int i = 1; i < n; i++){
-        int u, v;
-        cin >> u >> v;
-        adj[u].pb(v);
-        adj[v].pb(u);
-    }
-    vector<vector<int>> dp(n+1, vector<int>(17, 0));
-    dfs(1, 0, adj, dp);
-    int par = x;
-    int cnt = 0;
+ll binarylifting(ll x, ll k, vector<vector<ll>> &dp){
+    ll par = x;
+    ll cnt = 0;
     while(k){
         if(k & 1){
             par = dp[par][cnt];
@@ -81,7 +71,46 @@ void binarylifting(){
         k = k >> 1;
         cnt++;
     }
-    cout << par << endl;
+    return par;
+}
+
+ll lca(ll a, ll b, vector<ll> &level, vector<vector<ll>> &dp){
+        if(level[a] < level[b]){
+            swap(a, b);
+        }
+        ll k = level[a] - level[b];
+        a = binarylifting(a, k, dp);
+        if(a == b){
+            return a;
+        }
+        for(ll i = 20; i >= 0; i--){
+            if(dp[a][i] != dp[b][i]){
+                a = dp[a][i];
+                b = dp[b][i];
+            }
+        }
+        return dp[a][0];
+}
+
+void solve(){
+    ll n, q;
+    cin >> n >> q;
+    vector<ll> adj[n+1];
+    for(ll i = 2; i <= n; i++){
+        ll u, v;
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
+    }
+    vector<vector<ll>> dp(n+1, vector<ll>(21, 0));
+    vector<ll> level(n+1, 0);
+    dfs(1, 0, adj, dp, level);
+    while(q--){
+        ll a, b;
+        cin >> a >> b;
+        ll k = lca(a, b, level, dp);
+        cout << (level[a] + level[b] - 2*level[k]) << endl;
+    }
 }
 
 int main(){
@@ -100,7 +129,7 @@ int main(){
     t = 1;
     for(int i = 1; i <= t; i++){
         // cout << "Case #" << i << ": ";
-        binarylifting();
+        solve();
     }
 
     //end
