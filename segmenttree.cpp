@@ -36,7 +36,7 @@ public:
 public:
     void update(int ind, int low, int high, int i, int val, int arr[]){
         if(low == high){
-            seg[i] = val;
+            seg[ind] = val;
             arr[i] = val;
             return;
         }
