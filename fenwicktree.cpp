@@ -1,31 +1,31 @@
-class fenwicktree{
-    vector<int> fen;
+class fenwickTree{
+    vector<ll> ft;
     int n;
 public:
-    fenwicktree(int x){
-        fen.resize(x+1);
+    fenwickTree(int x){
         n = x;
+        ft.resize(x + 1);
+        fill(all(ft), 0);
     }
-
 public:
-    void update(int ind, int val){
-        while(ind <= n){
-            fen[ind] += val;
-            ind += ind & (-ind);
+    void update(int i, ll val){
+        while(i <= n){
+            ft[i] += val;
+            i += i & (-i);
         }
     }
-public:
-    int sum(int ind){
-        int s = 0;
-        while(ind >= 1){
-            s += fen[ind];
-            ind -= ind & (-ind);
+private:
+    ll answerUtil(int i){
+        ll sum = 0;
+        while(i >= 1){
+            sum += ft[i];
+            i -= i & (-i);
         }
-        return s;
+        return sum;
     }
 public:
-    int answerquery(int l, int r){
-        return sum(r) - sum(l - 1);
+    ll getanswer(int l, int r){
+        return answerUtil(r) - answerUtil(l - 1);
     }
 };
 
