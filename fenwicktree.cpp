@@ -28,3 +28,5 @@ public:
         return sum(r) - sum(l - 1);
     }
 };
+
+//how does ft is better than st? -> watch the space complexity.
