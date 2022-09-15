@@ -46,3 +46,35 @@ for(int i = 2; i * i <= 1000000; i++){
 }
 
 //segmented sieve ->
+void segmented_sieve(){
+    int l, r;
+    cin >> l >> r;
+    int size = r - l + 1;
+    vector<int> dummy(size, 1);
+    vector<int> primes;
+    for(int i = 2; i * i <= r; i++){
+        if(sieve[i] == 1){
+            primes.push_back(i);
+        }
+    }
+    for(auto x : primes){
+        int start = (l/x) * x;
+        if(start < l){
+            start += x;
+        }
+        start = max(start, x * x);
+        for(int i = start - l; i < size; i += x){
+            dummy[i] = 0;
+        }
+    }
+    vector<int> answer;
+    for(int i = 0; i < size; i++){
+        if(dummy[i] == 1){
+            answer.push_back(l + i);
+        }
+    }
+    cout << answer.size() << endl;
+    for(auto it : answer){
+        cout << it << " ";
+    }
+}
