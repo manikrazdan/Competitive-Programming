@@ -1,12 +1,12 @@
 class SegTree{
-    vector<int> seg;
+    vector<ll> seg;
 public:
     SegTree(int n){
         seg.resize(4*n + 1);
     }
 
 public:
-    void build(int ind, int low, int high, int arr[]){
+    void build(int ind, int low, int high, ll arr[]){
         if(low == high){
             seg[ind] = arr[low];
             return;
@@ -16,25 +16,25 @@ public:
 
         build(2*ind + 1, low, mid, arr);
         build(2*ind + 2, mid + 1, high, arr);
-        seg[ind] = max(seg[2*ind+1] , seg[2*ind+2]);
+        seg[ind] = seg[2*ind+1] + seg[2*ind+2];
     }
 
 public:
-    int answerquery(int ind, int low, int high, int l, int r, int arr[]){
+    ll answerquery(int ind, int low, int high, int l, int r){
         if(low >= l && high <= r){
             return seg[ind];
         }
         if(r < low || high < l){
-            return INT_MIN;
+            return 0;
         }
         int mid = (high + low) >> 1;
 
-        return max(answerquery(2*ind + 1, low, mid, l, r, arr), 
-            answerquery(2*ind + 2, mid + 1, high, l, r, arr));
+        return answerquery(2*ind + 1, low, mid, l, r) + 
+        answerquery(2*ind + 2, mid + 1, high, l, r);
     }
 
 public:
-    void update(int ind, int low, int high, int i, int val, int arr[]){
+    void update(int ind, int low, int high, int i, ll val, ll arr[]){
         if(low == high){
             seg[ind] = val;
             arr[i] = val;
@@ -48,6 +48,6 @@ public:
         }else{
             update(2*ind + 2, mid + 1, high, i, val, arr);
         }
-        seg[ind] = max(seg[ind*2 + 1], seg[2*ind + 2]);
+        seg[ind] = seg[ind*2 + 1] + seg[2*ind + 2];
     }
 };
