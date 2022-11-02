@@ -43,7 +43,7 @@ public:
             return;
         }
         if(rank[pu] == rank[pv]){
-            parent[pu] = pv;
+            parent[pv] = pu;
             rank[pu]++;
         }else if(rank[pu] < rank[pv]){
             parent[pu] = pv;
